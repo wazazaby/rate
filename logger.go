@@ -8,25 +8,33 @@ type Logger interface {
 	Errorf(format string, args ...any)
 }
 
-type noopLoggerImpl struct{}
+// discardLogger is [Logger] implementation that does nothing with it's input.
+type discardLogger struct{}
 
-func (*noopLoggerImpl) Infof(string, ...any)  {}
-func (*noopLoggerImpl) Debugf(string, ...any) {}
-func (*noopLoggerImpl) Errorf(string, ...any) {}
+func (discardLogger) Infof(string, ...any)  {}
+func (discardLogger) Debugf(string, ...any) {}
+func (discardLogger) Errorf(string, ...any) {}
 
-type standardLoggerImpl struct{}
+// fmtLogger is a [Logger] implementation that prints to [os.Stdout] using a
+// custom formatting template, passed to [fmt.Printf].
+type fmtLogger struct{}
 
-func (*standardLoggerImpl) Infof(format string, args ...any) {
+func (fmtLogger) Infof(format string, args ...any) {
 	fmt.Printf("[INFO]  "+format+"\n", args...)
 }
-func (*standardLoggerImpl) Debugf(format string, args ...any) {
+func (fmtLogger) Debugf(format string, args ...any) {
 	fmt.Printf("[DEBUG] "+format+"\n", args...)
 }
-func (*standardLoggerImpl) Errorf(format string, args ...any) {
+func (fmtLogger) Errorf(format string, args ...any) {
 	fmt.Printf("[ERROR] "+format+"\n", args...)
 }
 
 var (
-	noopLogger     = &noopLoggerImpl{}
-	standardLogger = &standardLoggerImpl{}
+	noopLogger     = &discardLogger{}
+	standardLogger = &fmtLogger{}
+)
+
+var (
+	_ Logger = &discardLogger{}
+	_ Logger = &fmtLogger{}
 )
