@@ -42,6 +42,10 @@ func (l *RPSLimiter) WithLogger(logger Logger) *RPSLimiter {
 	return l
 }
 
+func (l *RPSLimiter) DisableLogger() *RPSLimiter {
+	return l.WithLogger(noopLogger)
+}
+
 func (l *RPSLimiter) MakeBuffered(n int) *RPSLimiter {
 	if l.isRunningOrClosed() {
 		l.logger.Errorf("can't make the limiter buffered while it's running or closed")
