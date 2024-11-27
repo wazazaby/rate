@@ -1,2 +1,2 @@
 # rate
-Package rate provides a simple RPS rate limiter. 
+Package rate provides rate limiting components.
