@@ -8,7 +8,7 @@ type Logger interface {
 	Errorf(format string, args ...any)
 }
 
-// discardLogger is [Logger] implementation that does nothing with it's input.
+// discardLogger is [Logger] implementation that does nothing with its input.
 type discardLogger struct{}
 
 func (discardLogger) Infof(string, ...any)  {}
